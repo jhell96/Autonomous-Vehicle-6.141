@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="This is the portfolio for MIT class 6.141 team-8">
+
+    <title>Team 8 Speed Racer</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="stylesheets/team8.css"  media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+
+  <body>
+    <header>
+      <nav class="top-nav" id="top-nav-bar">
+        <div class="container">
+          <div class="nav-wrapper">
+            <a href="#" data-activates="nav-mobile" class="left button-collapse top-nav waves-effect waves-light circle hide-on-large-only">
+              <i class="material-icons">menu</i>
+            </a>
+            <a class="page-title"></a>
+          </div>
+        </div>
+      </nav>
+      <ul id="nav-mobile" class="side-nav fixed">
+        <li class="logo">
+          <a id="logo-container" href="index.html" class="brand-logo center">
+            <img id="front-page-logo" class="responsive-img" src="images/logo.jpg" />
+          </a>
+        </li>
+        <li><div class="divider"></div></li>
+        <li class="bold"><a href="index.html" class="waves-effect waves-red">Home</a></li>
+        <li class="bold"><a href="about.html" class="waves-effect waves-red">About</a></li>
+        <li class="bold"><a href="bios.html" class="waves-effect waves-red">Bios</a></li>
+        <li class="no-padding">
+          <ul class="collapsible collapsible-accordion">
+            <li class="bold">
+              <a class="collapsible-header waves-effect waves-red collapsible-header-mod">Lab Reports</a>
+              <div class="collapsible-body collapsible-body-mod">
+                <ul>
+                  <li><a href="lab_2.html">Lab 2</a></li>
+                  <li><a href="lab_3.html">Lab 3</a></li>
+                  <li><a href="lab_4.html">Lab 4</a></li>
+                  <li><a href="lab_5.html">Lab 5</a></li>
+                  <li><a href="lab_6.html">Lab 6</a></li>
+                  <li><a href="lab_7.html">Lab 7</a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </li>
+        <li class="bold"><a href="gallery.html" class="waves-effect waves-red">Gallery</a></li>
+      </ul>
+    </header>
+
+
+    <main>
+      <div class="container" id="main-container">
+        <div class="row">
+          <div class="col s12 m12 l12">
+
+              <h3>Lab 6 Report</h3>
+
+              <a href="static/rss-team8-lab6.pdf">Download as a PDF</a>
+
+              <h5>1 Introduction</h5>
+              <p>Lab 6 focuses on implementation of an effective path planning algorithm for the RACECAR to navigate the MIT tunnel system underneath Stata Center. The team decided to test implementations of PRM/A* and RRT algorithms for safe and efficient path planning, to be discussed in detail below, and then utilize pure pursuit to execute the found path with the RACECAR. Successful completion in this lab will add the ability to plan and execute a path (completely precomputed) in order to navigate the tunnels and avoid obstacles, in addition to previously achieved functionality such as visual servoing and localization, which will set the team up well for the RSS challenge to come.</p>
+
+              <b>[Sasha]</b>
+
+              <h6><i>1.1 Objectives</i></h6>
+              <p>The objectives of Lab 6 include developing and demonstrating the capability to plan trajectories in a map from a start pose to goal pose, to program the RACECAR to follow the planned path in the basement using particle filter localization and pure pursuit, and then execute this on the real RACECAR in the Stata basement.</p>
+
+              <h6><i>1.2 Theory</i></h6>
+              <p>There are numerous algorithms for path planning that each have their own strengths and shortcomings. The two main types of path planning algorithms are ones that (1) utilize the configuration space, and (2) sample search algorithms.</p>
+
+              <p>Configuration space algorithms include potential fields, exact and approximate cell decomposition, and state-space search. State-space search is then further divided into depth-first and breadth-first searches. While both of these utilize the idea of tree search, meaning that they search adjacent vertices from the current location, the fundamental difference between them is just how they search through the discretized vertices to find a path. Depth-first search means that the algorithm will leave from the start point and search adjacent vertices in the same segment of the tree until it either finds reaches the goal point or is unable to find a path to the goal. Breadth-first search instead builds the tree from the start point, outwards to all adjacent vertices, then again to the next group of adjacent vertices, and so on until one of the entire tree reaches the goal point. While depth first search is generally quicker and does not take the high computing power that is required by breadth-first search, breadth-first is guaranteed to find the shortest path. A variation of breadth-first search, called Dijkstra’s algorithm, is to find the most efficient path based on “cost” of the path steps rather than just the number of steps required. One example that is implemented during this lab, and is often used to guarantee shortest path finding is the A* algorithm. A* combines Dijkstra’s algorithm of calculating cost of path with a heuristic function to essentially weight future path motions towards the goal. In this way, the A* function is calculating the optimum path at each current point, <i>n</i>, to find <i>f(n) = c(n) + h(n)</i>, where <i>c(n)</i> is the exact cost incurred from the start vertex to the current vertex <i>n</i>, and <i>h(n)</i> is the estimated cost from any vertex n to the goal point. Most commonly this heuristic function <i>h(n)</i> is a straight line between the current point and goal point.</p>
+
+              <p>Sampling-based algorithms, on the other hand, do not have to explicitly construct or occupy configuration spaces, avoiding issues with complex configuration spaces and rapidly increasing run-time with increased degrees of freedom. The two that are discussed here, and tested for this application to the RACECAR in the Stata tunnels, are Probabilistic Road Maps (PRM) and Rapidly-Exploring Random Tree (RRT).</p>
+
+              <p>Implementation of the Probabilistic RoadMap algorithm involves sampling N points randomly from the configuration space, connecting all points with a straight trajectory, and then deleting any point or line that is through an obstacle. In this way, the algorithm can return a path including set vertices on the path for tracking and set edges to navigate that are known paths without obstacles. This returned set is known as the roadmap graph, and is most simply described as a discretization of the configuration space that can then be used for another path planning algorithm. An increased number of initially sampled points will increase the probability that this discretization is a complete algorithm, but also depends heavily on openness of the space (or rather, how many obstacles versus open paths large enough for the robot), as well as on computation time that an application is willing to run. Possible roadmap paths can sometimes dynamically-infeasible, especially if they are built under coarse discretizations. In order to mitigate this, we applied various heuristics to the PRM and A* implementation, motivation for which will also be discussed in Section 2.2.1 below.</p>
+
+              <p>The Rapidly-exploring Random Tree algorithm works exactly as the name suggests; a tree is generated from the start point and then random vertices are generated that rapidly extend from the source vertex. Each vertex is connected by an edge as they are generated but the branch is discontinued if the next vertex/edge pair is in the obstacle space. This process continues until a path is found from the start point to the goal point. This method is referred to as “rapidly-exploring” because it generates up to a certain acceptable number of child nodes once the newest best node (closest to goal) is found and appended to the current list of nodes in the path. This means that once it determines the best path so far, it will test a new direction a few times but then moves on when it cannot find a better path to the goal in that direction. In this way it is almost as quick as depth-first search because it is not getting side-tracked by breadth of adjacent nodes. It is also better than breadth-first search because it does not require the same high amount of computation time while still avoiding paths that take it further away from the goal.</p>
+
+              <b>[Caroline, Josh]</b>
+
+              <h5>2 Methodology</h5>
+              <p>In order to complete the objectives, the team needed to implement a path planner algorithm to know points to feed into the RACECAR on the path. The RACECAR then executes this path by using Pure Pursuit. The information for each component is discussed below. We tried two different path planning algorithms: PRM with A* and RRT. We found that RRT, while slower, produced a better path for the robot to follow, so our final path was generated using RRT.</p>
+
+              <h6><i>2.1 Inputs and Output of Functions</i></h6>
+              <p>This section will describe the inputs and outputs of the various functions, as many intermediate classes have been written that are required to interface with each other in order to complete functionality from taking in a map with a start point and goal point, plan an optimal path, and then execute the actions, either in simulation or with the actual RACECAR.</p>
+
+              <p>The first steps are drawn from PathPlanner.py, which introduces standards for all methods that will be upheld for all path planning implementations through @abstractmethod. It also includes the following methods for reference by the planners.</p>
+
+              <ul>
+ 
+                <li><b>__init__</b>(<i>self, startState, goalState, mapMsg</i>) : Takes in a map, a start point, and an end point. The map is taken in as a ROS map message that contains dimensions, resolution, and occupancy information to use for obstacle avoidance. The start and end points are given as [x, y, theta] pose values for interface with the localization methods.</li>
+
+                <li><b>computeBestPath</b>(<i>self</i>) : Abstract method that returns the (x, y) waypoints of the path as computed by the path planner algorithm. This list is to be used by pure pursuit to execute the path, but the 2D tuples will first be input into a different data structure, a KD-tree, for path implementation based on the robot’s local position.</li>
+
+                <li><b>getAllStates</b>(<i>self</i>) : Abstract method that returns a numpy array of all states of the search for debugging.</li>
+
+                <li><b>generateRandomPoint</b>(<i>self</i>) : Uniformly generates and returns a random point. This point is guaranteed to be within the map and within an ellipse formed around the start and end states as foci. The radius of the ellipse is calculated by half of the distance between the foci plus the predetermined constant planning search radius, as defined in the <span class="code">__init__()</span> function.</li>
+
+                <li><b>generateRandomPointGlobal</b>(<i>self</i>) : Uniformly generates a random point on the map. This is the same as <span class="code">generateRandomPoint()</span> as described above, but does not limit the point generation to the defined ellipse.</li>
+
+                <li><b>isOccupied</b>(<i>self, points</i>) : Returns True is the point on the map is occupied by an obstacle, as necessary for path planning in order to not create a path that is included in the obstacle space. Units are in meters.</li>
+
+                <li><b>metersToMapCell</b>(<i>self, meters</i>) and <b>mapCellToMeters</b>(<i>self, mapCell</i>) : Unit conversion methods for calculation of path and use in localization.</li>
+              </ul>
+
+              <p>The class <span class="code">PathPlanner_Writer</span> is used to actually calculate the optimal path to be used, save it to a map, and visualize the goal and points along the path. This class takes in any of the path planning algorithms in order to generate the output. Most of the functions are small, self-explanatory modules, but further detail is provided below for class initialization. This class is what actually passes a planning implementation into <span class="code">PathPlanner</span> and then publishes to a <span class="code">PoseArray</span> for use by pure pursuit. It is also the file that is called in PathPlanner.launch to run all path planning functions.</p>
+
+              <ul>
+                <li><b>__init__</b>(<i>self, outputFile, stateFile, indexFile, goals, PathPlannerImplimentation, path, states, startIndex, mapMsg</i>) : The initialization method publishes each the calculated goals (waypoints), states, and the path to a <span class="code">PoseArray</span> ROS topic. Note that the goals are kept as pose values in [x, y, theta], but theta is negligible because the path planner does not project a goal theta, only x,y-points, and theta is dealt with in the pure pursuit trajectory. The path planning algorithm to be used is passed into the <span class="code">__init__()</span> function. The function calls <span class="code">self.visualize()</span> to see the path and progress on the map real-time, and calls <span class="code">self.computePath()</span> to call the path planner with any start and end points.</li>
+              </ul>
+
+              <p>Rapidly-exploring Random Tree methods are implemented between the classes <span class="code">RRT</span> and <span class="code">RRT_Nodes</span>. While <span class="code">RRT_Node</span> takes the randomly generated point from <span class="code">PathPlanner</span> and generates a new node for the path if the point is not occupied by an obstacle. The class <span class="code">RRT</span> then takes this node and appends it to the current list of nodes. <span class="code">RRT</span> then checks if this node is closer to the goal than the current path, and if so the <span class="code">bestNode</span> and <span class="code">bestNodeLength</span> are updated to this most recent generation. Methods are discussed in further detail here, beginning with class <span class="code">RRT</span>. The class <span class="code">PathPlanner</span> is passed into <span class="code">RRT</span>.</p>
+
+              <ul>
+                <li><b>__init__</b>(<i>self, startState, goalState, mapMsg</i>) : Initializes the start node, a list <span class="code">self.nodes</span> to bookkeep all nodes that are generated and check to be within unoccupied space. Also bookkeeps the current <span class="code">self.bestNode</span> for a <span class="code">self.bestNodeLength</span> that is closer to the goal than the previous path.</li>
+
+                <li><b>computeBestPath</b>(<i>self</i>) : Calls <span class="code">self.iterate()</span> function for the predetermined number of iterations for the planner to execute. Returns the pose of the best node, <span class="code">self.bestNode</span>. Enforced by abstract method in PathPlanner.py.</li>
+
+                <li><b>getAllStates</b>(<i>self</i>) : Iterates through list of nodes to create state array. Enforced by abstract method in PathPlanner.py.</li>
+
+                <li><b>iterate</b>(<i>self</i>) : Calls <span class="code">generateRandomPoint()</span> from <span class="code">PathPlanner</span>. Calls <span class="code">self.getNearestNeighbor()</span> to get the nearest node in the discretization, and continues to iterate from that parent a predetermined number of times per planner iteration, called <span class="code">RRT_NUM_CHILDREN_PER_ITERATION<span class="code">. For each newly generated point the node is appended to the <span class="code">self.nodes</span> list, and then the best path is updated if it is currently closest to the goal.</li>
+
+                <li><b>getNearestNeighbor</b>(<i>self, searchPoint</i>) : Takes the randomly generated point as argument and finds the closest node to the current point. Function called in <span class="code">self.iterate()</span> in a for loop to continue adding children to parent nodes until an obstacle is hit and ends the branch.</li>
+
+                <li><b>updateBestPath</b>(<i>self, node</i>) : Calculates distance to goal and necessary orientation change to reach goal point. If the distance to the goal point is shorter than the previous best path, and the required turn angle is smaller than the maximum dynamically-possible angle, the best node is updated to the found path. Path length is also updated for bookkeeping. The function is called in <span class="code">self.iterate()</span> in order to check and potentially update the path for each generated point.</li>
+              </ul>
+
+              <b>[Caroline]</b>
+
+              <h6><i>2.2 Path Planners - RRT</i></h6>
+              <p>RRT stands for rapidly-exploring random trees. From a high level, it it randomly draws feasible paths in the search space until one reaches the goal. The paths are generated so that they tend to explore areas that are not yet explored - hence being rapidly-exploring.</p>
+
+              <p>The reason we chose to use RRT is because the paths it generates take into account the geometry and physics of the car. In particular there will be no sharp corners and any path found with be drivable by the car.</p>
+
+              <p>RRT works as follows:
+                <ol>
+                  <li>Generate a random point in the search space</li>
+                  <li>Choose state in the tree that is the nearest neighbor of the random point</li>
+                  <li>Randomly perturb that state according to the vehicle model and add the new states to the tree</li>
+                </ol>
+              </p>
+
+              <h6><i>2.2.1 Random Point Generation</i></h6>
+              <p>We define our search space on a path between start and end nodes <i>p<sub>0</sub></i> and <i>p<sub>1</sub></i> to be the intersection the set of unoccupied points and a circle which encompasses <i>p<sub>0</sub></i> and <i>p<sub>1</sub></i>. This circle is centered at the midpoint of <i>p<sub>0</sub></i> and <i>p<sub>1</sub></i> and has a radius large enough to encompass both points plus a constant buffer radius. Points are first randomly generated within the circle and then rejection sampling is used to produce points in the map.</p>
+
+              <h6><i>2.2.2 Nearest Neighbors</i></h6>
+              <p>Choosing the nearest neighbor of a random point is the bottleneck in the RRT algorithm. Linearly searching through the list of states for the nearest neighbor becomes slower and slower as the number of states increases. We solved this issue by randomly sampling a constant number of states and choosing the nearest neighbor from those. We realize that the smaller the sample size, the less exploratory the tree becomes. With a single sample the RRT algorithm would simply be a random walk, which tends to stay isolated to a single space. However we found we found with the right sample size we found a balance between the exploratory and efficiency. We also considered using 2D data structures for querying nearest neighbors, however most common structures like KD-Trees are generally static and would not be useful for a set of points that continues to be updated.</p>
+
+              <h6><i>2.2.3 State Perturbation</i></h6>
+              <p>After choosing a particular state, we perturb that state with a random driving command. We assume the car to be moving at constant velocity, so our commands only consist of a random steering angle in the car’s steering range which varies from -0.34 to 0.34 radians. Using the bicycle model of the car, we can calculate the new position of the car after traveling for a constant time <i>Δt</i>. For a particular steering angle <i>δ</i>, the curvature, <i>𝜅</i>, of the arc the car travels along is</p>
+
+              <div class="center">
+                <span><i>𝜅 = tan(δ)/L</i></span><br>
+              </div>
+
+              <p>Where <i>L</i> is the length of the car wheelbase. For a car traveling at constant velocity <i>v</i>, the new position with be at an angle <i>𝛼</i> and at distance <i>d</i> relative to the current position:</p>
+
+              <div class="center">
+                <span><i>𝛼 = 𝜅vΔt/2</i></span><br>
+                <span><i>d = 2 sin(𝛼)/𝜅</i></span><br>
+              </div>
+
+              <p>Therefore the new position <i>(x', y')</i> and new angle, <i>𝜃'</i>, of the state will be</p>
+
+              <div class="center">
+                <span><i>x' = x + d cos(𝜃 + 𝛼)</i></span><br>
+                <span><i>y' = y + d sin(𝜃 + 𝛼)</i></span><br>
+                <span><i>𝜃' = 𝜃 + 2 𝛼</i></span><br>
+              </div>
+
+              <p>As we add states we reject (but do not replace) states that intersect with obstacles.</p>
+
+              <p>After many iterations of the RRT algorithm are performed, we check for states that are within a certain threshold of the goal state. We backtrace from those states to find the best path to the goal state and return it.</p>
+
+              <b>[Trevor]</b>
+
+              <h6><i>2.3 Pure Pursuit</i></h6>
+              <p>In order to make the robot follow the generated path, we implemented pure pursuit control. We adapted the controller from lab 4 to follow points on an imaginary line instead of a bright orange one.</p>
+
+              <p>First, we put all of the generated points on our path into a <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.KDTree.html">KD Tree</a> for nearest neighbor searching in logarithmic time. Then we search the tree for the nearest point to the robot’s current location, determined from the localization. To get a point for pure pursuit to track, we walk up the list of points until we find two points on either side of our look ahead distance, then take the linear interpolation of those points to find one that’s exactly the look ahead distance away from the robot.</p>
+
+              <p>The point we choose to track starts out in map coordinates. In order for our controller to work, we need to transform it into the coordinate system of the robot.</p>
+
+              <div class="center">
+                <img class="responsive-img" src="images/lab6/purepursuit.png" height="75"><br>
+              </div>
+
+              <p>We define the goal point in the car’s reference frame as <i>(g<sub>x</sub>, g<sub>y</sub>)</i>. The lookup to the list of points described above gives the goal points in the global frame of the map. To translate the goal point in the global space to the local coordinate space of the robot, we find the difference in the global space coordinates of the robot’s position and the goal point. The norm of this difference gives us the measurement <i>l<sub>d</sub></i> in the figure above. We then apply a rotation matrix to the difference vector based on the robot’s current orientation relative to the map coordinates to translate the difference into the car’s reference. Given the goal in the relative frame of the car and other constants like the wheelbase of the car, we apply the normal pure pursuit equations to find the required steering angle.</p>
+
+              <div class="center">
+                <img class="responsive-img" src="images/lab6/math1.png" height="50"><br>
+                <img class="responsive-img" src="images/lab6/math2.png" height="50"><br>
+                <img class="responsive-img" src="images/lab6/math3.png" height="50"><br>
+              </div>
+
+              <p>As in Lab 4, we set the lookahead distance of the system to be linearly proportional to the current speed of the car. This factor is referred to as the reaction time and reflects how long it takes the car to adjust to some command.</p>
+
+              <b>[Katy, Kevin]</b>
+
+              <h5>3 Testing and Implementation</h5>
+
+              <h6><i>3.1 Dilation</i></h6>
+              <p>Before applying any path planning algorithms we first directly modified the map. We dilated the occupied spaces in the map, to account for places the robot could not travel because of localization error and its finite width. This was done by convolving the map image with a circle of radius equal to the width of the car plus an error term. This dilation also reduced the search space for path planning algorithms which helped with efficiency. Here we see the map before and after our dilation:</p>
+
+              <div class="center">
+                <img class="responsive-img" src="images/lab6/undilatedmap.jpg" width="300">
+                <img class="responsive-img" src="images/lab6/dilatedmap.png" width="300">
+              </div>
+
+              <b>[Trevor]</b>
+
+              <h6><i>3.2 RRT</i></h6>
+              <p>Our RRT implementation generated a good path given a very small set of points to interpolate between. We wrote an interface to RViz which collected poses drawn by the user as goal states to move between. Our path generated by RRT used 12 hand drawn pose states. We placed the states in the middle of passageways so that the job of turning corners was left to RRT. Below we display the goal poses as (very) small red arrows:</p>
+
+              <div class="center">
+                <img class="responsive-img" src="images/lab6/rrtnode.png" width="300">
+              </div>
+
+              <p>After the goal points were found, RRT would search for paths from one state to the next, trying to match positions and angles at the intersections as closely as possible. This process was fairly slow, and we dynamically updated the number of iterations used for a given search depending on the complexity of the passage being traversed. Straight lines were much easier than bendy passages. We set a very small time step size so that the path would be fine enough for pure pursuit. After about an hour of simulation a full path was produced.</p>
+
+              <div class="center">
+                <img class="responsive-img" src="images/lab6/rrtfull.png" width="300">
+                <img class="responsive-img" src="images/lab6/rrtpath.png" width="300">
+              </div>
+
+              <p>In hindsight we should have implemented a bidirectional search. It is very unlikely for the start state to randomly walk to the goal and we had to make our search particularly dense (and therefore slow) to compute the best path. What we should have done is both a forwards search from the start state and a backwards search from the end state. We could then form paths from start to end states wherever the two trees intersect and select the best path from those.</p>
+
+              <p>The randomness of RRT also adds jitter to the path. It would be relatively easy to add postprocessing that smooths the path to travel in a direct line between points in straight sections of the map. This would fix things like the extreme dip on the right hand side of the curve which happens because of a discontinuity between path segments.</p>
+
+              <h6><i>3.3 Debugging</i></h6>
+              <p>The majority of the time was spent on developing and implementing the various path planning algorithms, as the pure pursuit trajectory tracker and localization had been used before in previous labs. The debugging for the planning algorithms were able to be done independently from the full code implementation because it is generic enough to be used on various discretizations.</p>
+
+              <p>A greater percentage of specific debugging time was spent on integration of the path planners with the trajectory commands from pure pursuit. The first bugs fixed were in the calculations of the turn angle required to reach the next point, but this was mitigated by simply going through the mathematical process and trigonometry. The next issues arose with how the trajectory tracker was choosing its goal point. It always keeps track of the next X number of points in the given path rather than all points, but continually updates these kept points as it moves through the list. Nominally X = 10 points are kept but this can change as necessary from the configuration file. Regardless of the number of points tracked, the goal point for pure pursuit is the next point within 1 meter (the look ahead distance). The issue came that the method was updating its next point to be the very last point that was tracked, often far past the look ahead distance so that the assumptions of pure pursuit were broken. This was fixed by changing how the points were updated, and the tracker worked after that.</p>
+
+              <h6><i>3.4 Simulation</i></h6>
+              <p>Testing the pure pursuit code in the simulation was a long process. At first there was much confusion about what units all of the coordinates were in. Originally we were under the impression that we had to convert points from the map system into some global system, and then those global coordinates into local robot coordinates. Fortunately, we were able to go directly from map coordinates to local robot coordinates.</p>
+
+              <p>Once the units all matched up, we had to debug the trigonometry to compute and follow the goal point. This also started out badly, because y and x were flipped on the map. We ended up refactoring our code with more descriptive and clear calculations, which reduced any confusion about the directions of the axes.</p>
+
+              <p>After these bugs were resolved, the car nicely follows the manually created path in Gazebo, as shown in the video below.</p>
+
+              <br>
+              <div class="video-container">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/ijFS9_bXvP0?rel=0" frameborder="0" allowfullscreen></iframe>
+              </div>
+              <br>
+
+              <b>[Katy]</b>
+
+              <h6><i>3.5 Tunnel Testing</i></h6>
+              <p>The first tunnel test was following the manually created path that was used for testing pure pursuit in the simulation. It went very well, following the path almost exactly as it did in the simulation. Towards the end it brushed up against the wall, but that was due to poor point choices rather than the robot missing the path. A video of this run is shown below.</p>
+
+              <br>
+              <div class="video-container">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/CZZJnn03lyA?rel=0" frameborder="0" allowfullscreen></iframe>
+              </div>
+              <br>
+
+              <p>The next test was following the path returned by our RRT algorithm. This test didn’t go as well. The car quickly diverged from the path and oscillated back and forth rather than following a tighter line. We discovered our pure pursuit algorithm had a trigonometry error that was not caught during the testing of the smaller path. After that was fixed and the look ahead distance was increased, the car still did not perform well. We think this had a lot to do with dying wheel motors, so we didn’t have good control over the steering angle. A video of the original test before fixing the bug is shown below.</p>
+
+              <br>
+              <div class="video-container">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/GDMt_Sa29ao?rel=0" frameborder="0" allowfullscreen></iframe>
+              </div>
+              <br>
+
+              <b>[Katy]</b>
+
+              <h5>4 Teamwork</h5>
+              <p>Everybody on the team had various levels of experience with path and motion planning. At the very beginning we decided it was most important to conduct further research into the various algorithms we could potentially use. Shortly after the team split into groups working on writing the RRT and A* algorithms simultaneously, as well as creating the dilated map and working on implementing the pure pursuit algorithm. Although splitting our efforts to work on competing tasks once again created a time crunch towards the end, we believe it was in our best interests to do so, as this would allow us to choose the best working solution in the end.</p>
+
+              <b>[Sasha]</b>
+
+              <h5>5 Conclusion</h5>
+              <p></p>
+              <p></p>
+
+              <b>[Sasha]</b>
+
+          </div>
+        </div> 
+      </div> <!-- End Container -->
+    </main>    
+
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+    <script type="text/javascript" src="scripts/team8.js"></script>
+  </body>
+</html>

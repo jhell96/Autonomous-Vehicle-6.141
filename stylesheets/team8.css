@@ -1,0 +1,140 @@
+.code {
+	font-family: monospace;
+}
+.red-background {
+	background-color: rgb(220, 0, 0);
+	color: white;
+}
+
+.collapsible-header-mod {
+    color: rgba(0,0,0,0.87) !important;
+    display: block !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    height: 48px !important;
+    line-height: 48px !important;
+    padding: 0 32px !important;
+}
+
+.collapsible-body-mod {
+	padding: 0 0 0 32px !important;
+}
+
+#front-page-logo, #logo-container {
+	height: 57px;	
+}
+
+#top-nav-bar {
+	background-color: #FF3B3F;
+}
+
+#index-slider {
+	width: 75%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.indicator-item.active {
+	background-color: #5899ea !important;
+}
+
+.pad-10 {
+	padding: 10px !important;
+}
+
+
+
+/* clear fix */
+.grid:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* ---- .grid-item ---- */
+
+.grid-sizer,
+.grid-item {
+  width: 33.333%;
+}
+
+.grid-item {
+  float: left;
+  padding: 2px;
+}
+
+.grid-item img {
+  display: block;
+  max-width: 100%;
+}
+
+
+.rotate-img-90 {
+	-ms-transform: rotate(90deg); /* IE 9 */
+	-webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+	transform: rotate(90deg);
+}
+
+
+
+body {
+	background-color: #EFEFEF;
+}
+
+header, footer, main {
+	padding-left: 300px;
+}
+
+h3, h4 {
+	font-weight: 300;
+}
+
+.side-nav a {
+    font-weight: 400;
+}
+
+.collapsible-header-mod {
+    font-weight: 400 !important;
+}
+
+@media only screen and (max-width: 992px) {
+	header, main, footer {
+	    padding-left: 0;
+	}
+	.grid-sizer,
+	.grid-item {
+	  width: 50%;
+	}
+}
+
+@media only screen and (max-width: 420px) {
+	.grid-sizer,
+	.grid-item {
+	  width: 100%;
+	}
+}
+
+@media only screen and (min-width: 993px) {
+	#main-container {
+	    width: 90% !important;
+	}
+}
+
+@media only screen and (min-width: 601px) {
+	#main-container {
+	    width: 90% !important;
+	}
+}
+
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(255,0,0,0.3); 
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(255,0,0,0.5); 
+}

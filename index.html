@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="This is the portfolio for MIT class 6.141 team-8">
+
+    <title>Team 8 Speed Racer</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="stylesheets/team8.css"  media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+
+  <body>
+    <header>
+      <nav class="top-nav" id="top-nav-bar">
+        <div class="container">
+          <div class="nav-wrapper">
+            <a href="#" data-activates="nav-mobile" class="left button-collapse top-nav waves-effect waves-light circle hide-on-large-only">
+              <i class="material-icons">menu</i>
+            </a>
+            <a class="page-title"></a>
+          </div>
+        </div>
+      </nav>
+      <ul id="nav-mobile" class="side-nav fixed">
+        <li class="logo">
+          <a id="logo-container" href="index.html" class="brand-logo center">
+            <img id="front-page-logo" class="responsive-img" src="images/logo.jpg" />
+          </a>
+        </li>
+        <li><div class="divider"></div></li>
+        <li class="bold"><a href="index.html" class="waves-effect waves-red">Home</a></li>
+        <li class="bold"><a href="about.html" class="waves-effect waves-red">About</a></li>
+        <li class="bold"><a href="bios.html" class="waves-effect waves-red">Bios</a></li>
+        <li class="no-padding">
+          <ul class="collapsible collapsible-accordion">
+            <li class="bold">
+              <a class="collapsible-header waves-effect waves-red collapsible-header-mod">Lab Reports</a>
+              <div class="collapsible-body collapsible-body-mod">
+                <ul>
+                  <li><a href="lab_2.html">Lab 2</a></li>
+                  <li><a href="lab_3.html">Lab 3</a></li>
+                  <li><a href="lab_4.html">Lab 4</a></li>
+                  <li><a href="lab_5.html">Lab 5</a></li>
+                  <li><a href="lab_6.html">Lab 6</a></li>
+                  <li><a href="lab_7.html">Lab 7</a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </li>
+        <li class="bold"><a href="gallery.html" class="waves-effect waves-red">Gallery</a></li>
+        </ul>
+        </li>
+        <!--
+        <li class="bold"><a href="gallery.html" class="waves-effect waves-red">Gallery</a></li>
+        -->
+      </ul>
+    </header>
+
+
+    <main>
+      <div class="container" id="main-container">
+        <div class="row">
+          <div class="col s12 m12 l12 center">
+
+              <h3>MIT 6.141/16.405 RSS</h3>
+              <h5>Spring 2017 | Team 8 - Speed Racers</h5>
+              <h5></h5>
+              <p>Welcome to our portfolio! You can find out more information about our team, the class, and our progress here. This site will be continually updated throughout the semester.</p>
+              <p>The ultimate goal of this class is to create a robot to compete in a race challenge through the MIT underground tunnels. This project is started in the second half of the semester, while the team completes various lab projects to practice creating functionality for the robot during the first half of the semester. These labs include familiarization with the RACECAR simulator, wall following with a RANSAC algorithm implementation, and visual servoing to detect a cone and follow a line. </p>
+              <div class="slider" id="index-slider">
+                <ul class="slides">
+                  <li>
+                    <img src="images/gallery/gallery1.jpg">
+                  </li>
+                  <li>
+                    <img src="images/gallery/gallery4.jpg">
+                  </li>
+                  <li>
+                    <img src="images/gallery/gallery7.png">
+                  </li>
+                </ul>
+              </div>
+
+          </div>
+        </div> 
+      </div> <!-- End Container -->
+    </main>    
+
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+    <script type="text/javascript" src="scripts/team8.js"></script>
+  </body>
+</html>
